@@ -1,0 +1,50 @@
+[
+    {
+        "id": 4896,
+        "genus": "Schizosaccharomyces",
+        "species": "pombe",
+        "common": "Fission yeast"
+    },
+    {
+        "id": 4932,
+        "genus": "Saccharomyces",
+        "species": "cerevisiae",
+        "common": "Yeast"
+    },
+    {
+        "id": 6239,
+        "genus": "Caenorhabditis",
+        "species": "elegans",
+        "common": "Worm"
+    },
+    {
+        "id": 7227,
+        "genus": "Drosophila",
+        "species": "melanogaster",
+        "common": "Fruit Fly"
+    },
+    {
+        "id": 7955,
+        "genus": "Danio",
+        "species": "rerio",
+        "common": "Zebrafish"
+    },
+    {
+        "id": 8364,
+        "genus": "Xenopus",
+        "species": "tropicalis",
+        "common": "Western clawed frog"
+    },
+    {
+        "id": 10090,
+        "genus": "Mus",
+        "species": "musculus",
+        "common": "Mouse"
+    },
+    {
+        "id": 9606,
+        "genus": "Homo",
+        "species": "sapiens",
+        "common": "Human"
+    }
+]
