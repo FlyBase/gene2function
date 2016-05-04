@@ -148,13 +148,13 @@ while (<$fh>) {
     $bulk->index({
             id => $geneid,
             source => {
-                id       => $geneid,
-                taxid    => $taxid,
-                fullname => $name,
-                symbol   => $symbol,
-                synonyms => \@synonyms,
-                dbxrefs  => \@dbxrefs,
-                suggest  => \@suggest
+                id              => $geneid,
+                taxid           => $taxid,
+                fullname        => $name,
+                symbol          => $symbol,
+                symbol_synonyms => \@synonyms,
+                dbxrefs         => \@dbxrefs,
+                suggest         => \@suggest
             }
         }
     );
