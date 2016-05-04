@@ -1,79 +1,66 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-export default class GeneResult extends React.Component {
-    render() {
-        const term = this.props.params.term;
-        const results = [
-            {
-                "name": "Gene 1",
-                "links": "Ensembl HGNC NCBI OMIM",
-                "score": 10,
-                "best_score": "Yes",
-                "best_rev_score": "Yes",
-                "align": "(+)",
-                "source": "Compara, Inparanoid, OrthoDB, RoundUp"
-            },
-            {
-                "name": "Gene 2",
-                "links": "Ensembl HGNC NCBI OMIM",
-                "score": 10,
-                "best_score": "Yes",
-                "best_rev_score": "Yes",
-                "align": "(+)",
-                "source": "Compara, Inparanoid, OrthoDB, RoundUp"
-            },
-            {
-                "name": "Gene 3",
-                "links": "Ensembl HGNC NCBI OMIM",
-                "score": 10,
-                "best_score": "Yes",
-                "best_rev_score": "Yes",
-                "align": "(+)",
-                "source": "Compara, Inparanoid, OrthoDB, RoundUp"
-            },
-            {
-                "name": "Gene 4",
-                "links": "Ensembl HGNC NCBI OMIM",
-                "score": 10,
-                "best_score": "Yes",
-                "best_rev_score": "Yes",
-                "align": "(+)",
-                "source": "Compara, Inparanoid, OrthoDB, RoundUp"
+import GeneFilter from './GeneFilter';
+
+export default class GeneResult extends Component {
+
+    constructor(props) {
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    getOrganism(taxid) {
+        for (let org of this.props.organisms) {
+            if (org.id == taxid) {
+                return org;
             }
+        }
+        return null;
+    }
 
-        ];
+    handleClick(e, gene) {
+        e.preventDefault();
+        this.props.fetchOrtholog(gene.symbol, gene.taxid);
+    }
+
+    render() {
+        const { genes, organisms, selectedOrganism, setOrganismFilter, fetchOrtholog } = this.props;
+        if (genes.length == 0) { return null; }
         return (
-            <div>
-                <h3>Gene search sesults for <mark>{term}</mark></h3>
-                <table className="table table-hover table-striped">
-                    <thead>
-                        <tr>
-                            <th>Ortholog Gene</th>
-                            <th>Ortholog Gene Reports</th>
-                            <th>Score</th>
-                            <th>Best Score</th>
-                            <th>Best Rev Score</th>
-                            <th>Align</th>
-                            <th>Source</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {results.map(hit => {
-                        return (
-                            <tr key={hit.name}>
-                                <td>{hit.name}</td>
-                                <td>{hit.links}</td>
-                                <td>{hit.score}</td>
-                                <td>{hit.best_score}</td>
-                                <td>{hit.best_rev_score}</td>
-                                <td>{hit.align}</td>
-                                <td>{hit.source}</td>
+            <div className="panel panel-success">
+                <div className="panel-heading">Genes</div>
+                <div className="panel-body">
+                    <div className="row">
+                        <div className="col-sm-4">
+                            <GeneFilter organisms={organisms} selected={selectedOrganism} setOrganismFilter={setOrganismFilter} genes={genes} />
+                        </div>
+                    </div>
+                    <table className="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>Symbol</th>
+                                <th>Full Name</th>
+                                <th>Organism</th>
+                                <th>LinkOuts</th>
                             </tr>
-                        );
-                    })
-                    }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {genes.map(hit => {
+                            const source = hit._source;
+                            const org = this.getOrganism(source.taxid);
+                            const fullname = (source.fullname == "-") ? source.symbol : source.fullname;
+                            return (
+                                <tr key={source.id}>
+                                    <td><a href="#" onClick={(e) => {this.handleClick(e,source) }}>{source.symbol}</a></td>
+                                    <td>{fullname}</td>
+                                    <td><em>{org.genus} {org.species}</em></td>
+                                    <td><a className="btn btn-default" role="button" href={'https://www.ncbi.nlm.nih.gov/gene/' + source.id}>NCBI</a></td>
+                                </tr>
+                            );
+                        })}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         );
     }

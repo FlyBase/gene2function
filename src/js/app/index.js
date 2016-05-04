@@ -1,32 +1,32 @@
 import 'babel-polyfill';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, Route, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 
-import rootReducer from './reducers';
+import configureStore from './store/configureStore';
 
 import App from './containers/App';
-import GeneResult from './components/GeneResult';
-import DiseaseResult from './components/DiseaseResult';
+
+import SearchResult from './components/SearchResult';
+import OrthologResult from './components/OrthologResult';
 
 console.debug("Creating store");
-
-const store = createStore(rootReducer);
+const initialState = {};
+const store = configureStore(initialState, browserHistory);
 
 console.debug("Creating history");
 const history = syncHistoryWithStore(browserHistory, store);
 
 console.debug("Rendering App");
-ReactDOM.render(
+render(
     <Provider store={store}>
         <Router history={history}>
             <Route path="/" component={App}>
-                <Route path="search/organism/:org/gene/:term" component={GeneResult} />
-                <Route path="search/disease/:term" component={DiseaseResult} /> 
-                <Route path="orthologs/:gene" component={GeneResult} />
+                <Route path="search/:term" component={SearchResult} />
+                <Route path="search/gene/:taxid/symbol/:symbol" component={SearchResult} />
+                <Route path="ortholog/:taxid/:gene" component={OrthologResult} />
             </Route>
         </Router>
     </Provider>,

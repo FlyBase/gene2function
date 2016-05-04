@@ -1,11 +1,12 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
-import gene from './gene';
-import disease from './disease';
+
+import search from './search';
+import orthologs from './orthologs';
 
 const rootReducer = combineReducers({
-      gene,
-      disease,
+      search,
+      orthologs,
       routing: routerReducer
 })
 

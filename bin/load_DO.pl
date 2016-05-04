@@ -11,15 +11,21 @@ use Search::Elasticsearch;
 use Bio::OntologyIO;
 
 my $opts = {
-    help              => 0,
-    man               => 0,
-    debug             => 0,
-    file              => '/data/doid.obo.gz',
+    help  => 0,
+    man   => 0,
+    debug => 0,
+    index => 'ontology',
+    type  => 'do',
+    do    => '/data/doid.obo.gz',
+    hgnc  => '/data/hgnc_mapping.tsv.gz'
 };
 
 
 GetOptions ($opts,
-    'file=s',
+    'do=s',
+    'index=s',
+    'type=s',
+    'hgnc=s',
     'debug',
     'help|?',
     'man',
@@ -39,42 +45,58 @@ load_DO.pl - A script to load the Disease Ontology OBO file into Elasticsearch.
     Options:
     --help 
     --man
-    --file <DO OBO file> default: /data/doid.obo.gz
+    --index <index name> default: ontology
+    --type  <type name> default: do
+    --do <DO OBO file> default: /data/doid.obo.gz
+    --hgnc <custom HGNC mapping file> default: /data/hgnc_mapping.tsv.gz
 
 e.g.
      ./load_DO.pl
-     ./load_DO.pl --file /mydo.obo.gz
+     ./load_DO.pl --do /mydo.obo.gz
 
 =head1 OPTIONS
 
 =over 8
 
-=item B<file> I<DO OBO file>
+=item B<do> I<DO OBO file>
 
 Provide an alternative location for the DO OBO file.
 default: /data/doid.obo.gz
 
+=item B<index> I<index name>
+
+The Elasticsearch index to use.
+
+=item B<type> I<type name>
+
+The Elasticsearch type to use.
+
+=item B<hgnc> I<HGNC mapping file>
+
+The HGNC mapping file generated from L<bin/fetch_hgnc.pl>
+default: /data/hgnc_mapping.tsv.gz
 
 =back
 
 =cut
 
-open (my $fh, '-|', "/bin/gzip -dc $opts->{file}"); 
+my $hgnc = load_hgnc($opts->{hgnc});
+open (my $fh, '-|', "/bin/gzip -dc $opts->{do}"); 
 
 my $es = Search::Elasticsearch->new( nodes => 'db:9200');
 $es->indices->delete( index => 'ontology') if $es->indices->exists( index=> 'ontology');
 
 my $bulk = $es->bulk_helper(
-    index => 'ontology',
-    type => 'do'
+    index => $opts->{index},
+    type => $opts->{type}
 );
 
 #Setup index mappings.
 $es->indices->create(
-    index   => 'ontology',
+    index   => $opts->{index},
     body    => {
         mappings => {
-            do => {
+            $opts->{type} => {
                 properties => {
                     id => {
                         type => 'string',
@@ -82,9 +104,17 @@ $es->indices->create(
                     },
                     name       => { type => 'string'  },
                     definition => { type => 'string' },
-                    dbxrefs => {
+                    dbxrefs => { type=> 'string' },
+                    genes => {
                         type => 'string',
-                        index => 'not_analyzed'
+                        analyzer => 'simple'
+                    },
+                    gene_count => { type => 'integer' },
+                    suggest => {
+                        type => 'completion',
+                        analyzer => 'simple',
+                        search_analyzer => 'simple',
+                        payloads => 'false'
                     }
                 }
             }
@@ -107,8 +137,11 @@ for my $ont ($do_parser->next_ontology()) {
         next if $term->is_obsolete;
         say "Working on " . $term->name;
 
-        my @dbxrefs = $term->get_secondary_ids();
-        my $id = $term->identifier;
+        my @dbxrefs    = $term->get_secondary_ids();
+        my $genes      = get_omim_genes({ hgnc => $hgnc, dbxrefs => \@dbxrefs });
+        my $gene_count = scalar @{$genes};
+        my $id         = $term->identifier;
+
         $bulk->index({
                 id => $id,
                 source => {
@@ -116,6 +149,9 @@ for my $ont ($do_parser->next_ontology()) {
                     name => $term->name(),
                     definition => $term->definition(),
                     dbxrefs => \@dbxrefs,
+                    genes => $genes,
+                    gene_count => $gene_count,
+                    suggest => [$id, $term->name()]
                 }
             }
         );
@@ -123,3 +159,40 @@ for my $ont ($do_parser->next_ontology()) {
 }
 $bulk->flush();
 close($fh);
+
+sub load_hgnc {
+    my $hgnc = shift;
+    my %result;
+    open (my $fh, '-|', "/bin/gzip -dc $hgnc"); 
+    while (<$fh>) {
+        chomp;
+        my (@cols) = split /\t/;
+        next unless $cols[0] =~ /^HGNC:\d+$/;
+        next unless defined $cols[6] && defined $cols[5];
+
+        if ($cols[5] =~ /\w+/ and $cols[6] =~ /\w+/) {
+            $result{$cols[6]} //= [];
+            push(@{$result{$cols[6]}},$cols[1]) 
+        }
+    }
+    close($fh);
+    return \%result;
+}
+
+sub get_omim_genes {
+    my ($args) = @_;
+    my @genes;
+
+    my $hgnc = $args->{hgnc};
+
+    for my $dbxref (@{$args->{dbxrefs}}) {
+        next unless ($dbxref =~ /^OMIM:(\d+)$/);
+        $dbxref =~ s/^OMIM://g; #Strip OMIM prefix off.
+        if (defined $hgnc->{$dbxref}) {
+            push(@genes,@{$hgnc->{$dbxref}});
+        }
+    }
+    return \@genes;
+
+}
+
