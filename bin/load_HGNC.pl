@@ -15,9 +15,9 @@ my $opts = {
     help              => 0,
     man               => 0,
     debug             => 0,
-    index             => 'gene',
-    type              => 'symbol',
-    file              => '/data/gene_info.gz',
+    index             => 'ontology',
+    type              => 'do',
+    file              => '/data/hgnc_mapping.tsv.gz',
 };
 
 
@@ -35,31 +35,33 @@ pod2usage(-exitstatus => 0, -verbose => 2) if $opts->{man};
 
 =head1 NAME
 
-load_gene_info.pl - A script to load the NCBI gene_info file into Elasticsearch.
+load_HGNC.pl - A script to load the custom HGNC mapping file.
 
 =head1 SYNOPSIS
 
- load_gene_info.pl [options]
+ load_HGNC.pl [options]
 
     Options:
     --help 
     --man
-    --file <NCBI gene_info file> default: /data/gene_info.gz
-    --index <index name> default: gene
-    --type  <type name>  default: symbol
+    --file <HGNC mapping> default: /data/hgnc_mapping.tsv.gz
+    --index <index name> default: ontology
+    --type  <type name>  default: do
 
 e.g.
-     ./load_gene_info.pl
-     ./load_gene_info.pl --file /gene_info.gz --index myindex --type mytype
+     ./load_HGNC.pl
+     ./load_HGNC.pl --file /hgnc.gz --index myindex --type mytype
 
 =head1 OPTIONS
 
 =over 8
 
-=item B<file> I<NCBI gene_info file>
+=item B<file> I<HGNC mappin file>
 
-Provide an alternative location for the gene_info file.
-default: /data/gene_info.gz
+Provide an alternative location for the custom HGNC mapping file.
+default: /data/hgnc_mapping.tsv.gz
+
+See also L<bin/fetch_hgnc.pl>
 
 =item B<index> I<index name>
 
@@ -90,7 +92,7 @@ $es->indices->create(
     index   => $opts->{index},
     body    => {
         mappings => {
-            $opts->{type} => {
+            do => {
                 properties => {
                     id => {
                         type => 'string',
@@ -98,29 +100,11 @@ $es->indices->create(
                     },
                     symbol     => {
                         type => 'string',
-                        analyzer => 'simple'
-                    },
-                    fullname => {
-                        type => 'string',
-                        analyzer => 'simple'
-                    },
-                    symbol_synonyms => {
-                        type  => 'string',
-                        analyzer => 'simple'
-                    },
-                    taxid => {
-                        type => 'integer',
                         index => 'not_analyzed'
                     },
-                    dbxrefs => { 
-                        type=> 'string',
-                        analyzer => 'standard'
-                    },
-                    suggest => {
-                        type => 'completion',
-                        analyzer => 'simple',
-                        search_analyzer => 'simple',
-                        payloads => 'false'
+                    synonyms => {
+                        type  => 'string',
+                        index => 'not_analyzed'
                     }
                 }
             }
@@ -137,13 +121,7 @@ while (<$fh>) {
     my @symbols = ($symbol);
     my @synonyms = split /\|/, $cols[1];
     my $name = $cols[8];
-    my @dbxrefs;
-    @dbxrefs = split /\|/, $cols[2] if ($cols[2] ne '-');
-
     push @synonyms, $cols[7] if ($cols[7] ne '-' && $symbol ne $cols[7]);
-
-    my @suggest;
-    push(@suggest,$geneid,$symbol,@dbxrefs);
 
     $bulk->index({
             id => $geneid,
@@ -152,9 +130,7 @@ while (<$fh>) {
                 taxid    => $taxid,
                 fullname => $name,
                 symbol   => $symbol,
-                synonyms => \@synonyms,
-                dbxrefs  => \@dbxrefs,
-                suggest  => \@suggest
+                synonyms => \@synonyms
             }
         }
     );

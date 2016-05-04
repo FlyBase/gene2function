@@ -20,15 +20,6 @@ RUN mkdir -p /data
 
 COPY . /g2f/
 
-#Generate the HGNC mapping file.
-RUN /g2f/bin/fetch_hgnc.pl | gzip > /data/hgnc_mapping.tsv.gz
-#NCBI gene_info file for gene symbols and synonyms.
-RUN curl -s ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene_info.gz > /data/gene_info.gz
-#DO OBO file
-RUN curl -s -L http://purl.obolibrary.org/obo/doid.obo | gzip > /data/doid.obo.gz
-#OMIM 
-#RUN curl -s http://omim.org/static/omim/data/mim2gene.txt | gzip > /data/mim2gene.txt.gz
-
 VOLUME /g2f
 VOLUME /data
 
