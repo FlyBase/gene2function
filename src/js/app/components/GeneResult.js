@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory as history } from 'react-router';
 
 import GeneFilter from './GeneFilter';
 
@@ -20,6 +21,7 @@ export default class GeneResult extends Component {
 
     handleClick(e, gene) {
         e.preventDefault();
+        history.push('/ortholog/' + gene.taxid + '/' + gene.symbol);
         this.props.fetchOrtholog(gene.symbol, gene.taxid);
     }
 

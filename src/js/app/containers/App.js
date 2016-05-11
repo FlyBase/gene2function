@@ -50,7 +50,8 @@ class App extends Component {
         if (this.props.children != null) {
             result = React.cloneElement(this.props.children, {
                 orthologs: this.props.orthologs,
-                organisms: this.props.organisms
+                organisms: this.props.organisms,
+                fetchOrtholog: this.props.fetchOrtholog
             });
         }
         else if (diseases.length == 0 && genes.length==0 && this.props.term.length > 0) {
@@ -116,7 +117,7 @@ class App extends Component {
 App.propTypes = {
 };
 //App.defaultProps = { organism: "dmel", term: "" };
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
     console.debug("mapping state to props");
     console.debug(state);
     return {

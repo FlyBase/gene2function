@@ -42,9 +42,7 @@ export function receivedResults(term, json) {
 export const FETCH_ORTHOLOG = 'FETCH_ORTHOLOG';
 export function fetchOrtholog(gene, taxid) {
     return dispatch => {
-        const url = '/ortholog/' + taxid + '/' + gene;
         dispatch(orthologSent(gene, taxid));
-        dispatch(push(url));
         return fetch('/api/ortholog/' + taxid + '/' + gene)
             .then(response => response.json())
             .then(json => dispatch(receivedOrtholog(gene, taxid, json)));
@@ -60,9 +58,16 @@ export const RECEIVED_ORTHOLOG = 'RECEIVED_ORTHOLOG';
 export function receivedOrtholog(gene, taxid, json) {
     console.debug("in receivedOrtholog()");
 
+    let orthologs = [];
+    for (let o of json) {
+        if (o.status == 'success') {
+            orthologs.push(o);
+        }
+    }
+
     return {
         type: RECEIVED_ORTHOLOG,
-        orthologs: json,
+        orthologs: orthologs,
         gene: gene,
         taxid: taxid
     };

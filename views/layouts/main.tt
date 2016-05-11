@@ -7,11 +7,43 @@
         <title>Gene to Function</title>
 
         <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"></link>
 
         <!-- Optional theme -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous"></link>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></link>
+        <link rel="stylesheet" href="/assets/react-bootstrap-table-all.min.css"></link>
+        <style>
+        .rotated-text {
+            display: inline-block;
+            overflow: hidden;
+            width: 1.7em;
+        }
+        .rotated-text-inner {
+            display: inline-block;
+            white-space: nowrap;
+            -webkit-transform: translate(1.1em,0) rotate(90deg);
+               -moz-transform: translate(1.1em,0) rotate(90deg);
+                 -o-transform: translate(1.1em,0) rotate(90deg);
+                    transform: translate(1.1em,0) rotate(90deg);
+            -webkit-transform-origin: 0 0;
+               -moz-transform-origin: 0 0;
+                 -o-transform-origin: 0 0;
+                    transform-origin: 0 0;
+           /* IE9+ */
+           -ms-transform: none;
+           -ms-transform-origin: none;
+           /* IE8+ */
+           -ms-writing-mode: tb-rl;
+           /* IE7 and below */
+           *writing-mode: tb-rl;
+        }
+        .rotated-text-inner:before {
+            content: "";
+            float: left;
+            margin-top: 100%;
+        }
+        </style>
     </head>
     <body>
         <% content %>
@@ -21,6 +53,6 @@
 
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-        <script src="/js/bundle.js" ></script>
+        <script src="/assets/bundle.js" ></script>
     </body>
 </html>

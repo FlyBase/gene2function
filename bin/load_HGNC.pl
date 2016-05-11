@@ -140,7 +140,7 @@ close($fh);
 
 sub load_organisms {
     local $/;
-    open( my $fh, '<', File::Spec->catfile($FindBin::Bin,'..','data','organisms.json'));
+    open( my $fh, '<', File::Spec->catfile($FindBin::Bin,'..','conf','organisms.json'));
     my $json_text = <$fh>;
     close($fh);
     return decode_json( $json_text );

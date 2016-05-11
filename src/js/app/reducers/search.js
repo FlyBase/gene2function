@@ -5,7 +5,7 @@ const initialState = {
     genes: [],
     diseases: [],
     selectedOrganism: 0,
-    organisms: require("../../../../data/organisms.json"),
+    organisms: require("../../../../conf/organisms.json"),
     isSearching: false
 };
 

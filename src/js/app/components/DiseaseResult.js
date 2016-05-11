@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory as history } from 'react-router';
 
 export default class DiseaseResult extends Component {
 
@@ -10,6 +11,7 @@ export default class DiseaseResult extends Component {
     handleClick(e, gene, taxid) {
         e.preventDefault();
         console.debug("Gene clicked" + gene + " " + taxid);
+        history.push('/ortholog/' + taxid + '/' + gene);
         this.props.fetchOrtholog(gene,taxid);
     }
 
@@ -45,7 +47,7 @@ export default class DiseaseResult extends Component {
                                         <ul className="list-inline">
                                         {source.genes.map(gene => {
                                             return (
-                                                <li key={gene}><a href="#" onClick={(e) => {this.handleClick(e, gene, 9606)}}>{gene}</a></li>
+                                                <li key={source.id + gene}><a href="#" onClick={(e) => {this.handleClick(e, gene, 9606)}}>{gene}</a></li>
                                             );
                                         })}
                                         </ul>

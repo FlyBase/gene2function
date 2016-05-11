@@ -206,13 +206,14 @@ sub load_mim2gene {
         next unless $geneid && $id;
 
         if ($id =~ /\w+/ and $geneid =~ /\w+/) {
-            $result{$id} //= [];
-            push(@{$result{$id}},$geneid) 
+            #say "Already found Gene $geneid for OMIM $id" if exists $result{$id}{$geneid};
+            $result{$id}{$geneid} = undef;
         }
     }
     close($fh);
-    return \%result;
-
+    #This turns the hash of hashes into a hash of arrays.
+    #The hash of hashes was used to remove duplicate genes.
+    return { map { $_ => [keys %{$result{$_}} ] } keys %result };
 }
 
 sub load_genemap {
@@ -238,7 +239,7 @@ sub load_genemap {
 
 sub get_omim_genes {
     my ($args) = @_;
-    my @genes;
+    my %genes;
 
     my $omim = $args->{omim};
     my $hgnc = $args->{hgnc};
@@ -248,11 +249,10 @@ sub get_omim_genes {
         $dbxref =~ s/^OMIM://g; #Strip OMIM prefix off.
         if (defined $omim->{$dbxref}) {
             #Turn Gene IDs into Symbols
-            my @symbols =  @{$hgnc}{@{$omim->{$dbxref}}};
-            push(@genes,@symbols);
+            map { $genes{$_} = undef } @{$hgnc}{@{$omim->{$dbxref}}};
         }
     }
-    return \@genes;
+    return [keys %genes ];
 
 }
 

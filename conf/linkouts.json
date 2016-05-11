@@ -1,0 +1,42 @@
+{
+    "ENTREZGENE" : {
+        "label": "NCBI",
+        "url": "http://www.ncbi.nlm.nih.gov/gene/?term=",
+        "urlsuffix": "[uid]"
+    },
+    "MGI": {
+        "label": "MGI",
+        "url": "http://www.informatics.jax.org/marker/",
+        "urlsuffix": ""
+    },
+    "XENBASE": {
+        "label": "Xenbase",
+        "url": "http://www.xenbase.org/gene/showgene.do?method=display&geneId=",
+        "urlsuffix": ""
+    }, 
+    "ZFIN": {
+        "label": "ZFIN",
+        "url": "http://zfin.org/cgi-bin/webdriver?MIval=aa-markerview.apg&OID=",
+        "urlsuffix": ""
+    }, 
+    "FB": {
+        "label": "FlyBase",
+        "url": "http://flybase.org/reports/",
+        "urlsuffix": ".html"
+    },
+    "WORMBASE": {
+        "label": "WormBase",
+        "url": "http://www.wormbase.org/search/gene/",
+        "urlsuffix": ""
+    },
+    "SGD": {
+        "label": "SGD",
+        "url": "http://www.yeastgenome.org/cgi-bin/locus.fpl?sgdid=",
+        "urlsuffix": ""
+    },
+    "HGNC": {
+        "label": "HGNC",
+        "url": "http://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=",
+        "urlsuffix": ""
+    }
+}
