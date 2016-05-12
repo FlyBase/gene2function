@@ -1,4 +1,4 @@
-import { SEARCH_TERM, SEARCH_SENT, RECEIVED_RESULTS, SET_ORGANISM_FILTER } from '../actions';
+import { SEARCH_TERM, SEARCH_SENT, RECEIVED_RESULTS, SET_ORGANISM_FILTER, TOGGLE_SEARCH } from '../actions';
 
 const initialState = {
     term: '',
@@ -6,7 +6,8 @@ const initialState = {
     diseases: [],
     selectedOrganism: 0,
     organisms: require("../../../../conf/organisms.json"),
-    isSearching: false
+    isSearching: false,
+    isSimple: true
 };
 
 export default function search(state = initialState, action) {
@@ -30,6 +31,8 @@ export default function search(state = initialState, action) {
             console.debug("set org fired.");
             console.debug(action);
             return { ...state, selectedOrganism: action.taxid };
+        case TOGGLE_SEARCH:
+            return {...state, isSimple: !state.isSimple };
         default:
             return state;
     }

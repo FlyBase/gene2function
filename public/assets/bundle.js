@@ -35816,7 +35816,8 @@
 	    diseases: [],
 	    selectedOrganism: 0,
 	    organisms: __webpack_require__(564),
-	    isSearching: false
+	    isSearching: false,
+	    isSimple: true
 	};
 
 	function search() {
@@ -35842,6 +35843,8 @@
 	            console.debug("set org fired.");
 	            console.debug(action);
 	            return _extends({}, state, { selectedOrganism: action.taxid });
+	        case _actions.TOGGLE_SEARCH:
+	            return _extends({}, state, { isSimple: !state.isSimple });
 	        default:
 	            return state;
 	    }
@@ -35856,7 +35859,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.SET_ORGANISM_FILTER = exports.RECEIVED_ORTHOLOG = exports.ORTHOLOG_SENT = exports.FETCH_ORTHOLOG = exports.RECEIVED_RESULTS = exports.SEARCH_SENT = exports.SEARCH_TERM = undefined;
+	exports.TOGGLE_SEARCH = exports.SET_ORGANISM_FILTER = exports.RECEIVED_ORTHOLOG = exports.ORTHOLOG_SENT = exports.FETCH_ORTHOLOG = exports.RECEIVED_RESULTS = exports.SEARCH_SENT = exports.SEARCH_TERM = undefined;
 	exports.searchTerm = searchTerm;
 	exports.searchSent = searchSent;
 	exports.receivedResults = receivedResults;
@@ -35864,6 +35867,7 @@
 	exports.orthologSent = orthologSent;
 	exports.receivedOrtholog = receivedOrtholog;
 	exports.setOrganismFilter = setOrganismFilter;
+	exports.toggleSearch = toggleSearch;
 
 	var _isomorphicFetch = __webpack_require__(562);
 
@@ -35993,6 +35997,11 @@
 	var SET_ORGANISM_FILTER = exports.SET_ORGANISM_FILTER = 'SET_ORGANISM_FILTER';
 	function setOrganismFilter(taxid) {
 	    return { type: SET_ORGANISM_FILTER, taxid: taxid };
+	}
+
+	var TOGGLE_SEARCH = exports.TOGGLE_SEARCH = 'TOGGLE_SEARCH';
+	function toggleSearch() {
+	    return { type: TOGGLE_SEARCH };
 	}
 
 /***/ },
@@ -36590,6 +36599,14 @@
 
 	var _SearchResult2 = _interopRequireDefault(_SearchResult);
 
+	var _Simple = __webpack_require__(855);
+
+	var _Simple2 = _interopRequireDefault(_Simple);
+
+	var _Advanced = __webpack_require__(856);
+
+	var _Advanced2 = _interopRequireDefault(_Advanced);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -36608,26 +36625,11 @@
 
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this, props));
 
-	        _this.handleChange = _this.handleChange.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        _this.handleFocus = _this.handleFocus.bind(_this);
 	        return _this;
 	    }
 
 	    _createClass(App, [{
-	        key: 'handleChange',
-	        value: function handleChange(e) {
-	            if (e.target.value.length > 0) {
-	                this.props.onChange(e.target.value);
-	            }
-	        }
-	    }, {
-	        key: 'handleFocus',
-	        value: function handleFocus() {
-	            console.debug("handlFocus called");
-	            _reactRouter.browserHistory.push('/');
-	        }
-	    }, {
 	        key: 'handleSubmit',
 	        value: function handleSubmit(e) {
 	            e.preventDefault();
@@ -36716,6 +36718,8 @@
 	                    fetchOrtholog: this.props.fetchOrtholog });
 	            }
 
+	            var form = this.props.isSimple ? _react2.default.createElement(_Simple2.default, null) : _react2.default.createElement(_Advanced2.default, { organisms: this.props.organisms });
+
 	            return _react2.default.createElement(
 	                'div',
 	                null,
@@ -36732,7 +36736,8 @@
 	                            _react2.default.createElement(
 	                                'h2',
 	                                null,
-	                                'Ortholog Search'
+	                                this.props.isSimple ? null : 'Advanced',
+	                                ' Ortholog Search'
 	                            )
 	                        )
 	                    ),
@@ -36743,36 +36748,14 @@
 	                            'div',
 	                            { className: 'col-md-12' },
 	                            _react2.default.createElement(
-	                                'div',
-	                                { className: 'jumbotron' },
-	                                _react2.default.createElement(
-	                                    'form',
-	                                    { onSubmit: this.handleSubmit },
-	                                    _react2.default.createElement(
-	                                        _reactBootstrap.FormGroup,
-	                                        null,
-	                                        _react2.default.createElement(
-	                                            _reactBootstrap.ControlLabel,
-	                                            null,
-	                                            'Enter Gene Symbol or Disease name'
-	                                        ),
-	                                        _react2.default.createElement(
-	                                            _reactBootstrap.InputGroup,
-	                                            { bsSize: 'large' },
-	                                            _react2.default.createElement(
-	                                                _reactBootstrap.InputGroup.Addon,
-	                                                null,
-	                                                _react2.default.createElement('i', { className: 'fa fa-search' })
-	                                            ),
-	                                            _react2.default.createElement(_reactBootstrap.FormControl, {
-	                                                type: 'text',
-	                                                placeholder: 'Breast cancer, Parkinson\'s, ADH4, PARK2, ...',
-	                                                onChange: this.handleChange,
-	                                                onFocus: this.handleFocus
-	                                            })
-	                                        )
-	                                    )
-	                                )
+	                                _reactBootstrap.Form,
+	                                { onSubmit: this.handleSubmit },
+	                                form
+	                            ),
+	                            _react2.default.createElement(
+	                                'a',
+	                                { className: 'pull-right', href: '#', onClick: this.props.toggleSearch },
+	                                this.props.isSimple ? 'Advanced' : 'Simple'
 	                            )
 	                        )
 	                    ),
@@ -36794,7 +36777,19 @@
 	    return App;
 	}(_react.Component);
 
-	App.propTypes = {};
+	App.propTypes = {
+	    term: _react.PropTypes.string,
+	    isSimple: _react.PropTypes.bool,
+	    diseases: _react.PropTypes.array,
+	    genes: _react.PropTypes.array,
+	    organisms: _react.PropTypes.array,
+	    selectedOrganism: _react.PropTypes.number,
+	    fetchOrtholog: _react.PropTypes.func,
+	    onChange: _react.PropTypes.func,
+	    setOrganismFilter: _react.PropTypes.func,
+	    toggleSearch: _react.PropTypes.func
+	};
+
 	//App.defaultProps = { organism: "dmel", term: "" };
 	function mapStateToProps(state, ownProps) {
 	    console.debug("mapping state to props");
@@ -36816,6 +36811,10 @@
 	        fetchOrtholog: function fetchOrtholog(gene, taxid) {
 	            console.debug("Firing fetchOrthologs");
 	            dispatch(Actions.fetchOrtholog(gene, taxid));
+	        },
+	        toggleSearch: function toggleSearch(e) {
+	            dispatch(Actions.toggleSearch());
+	            e.preventDefault();
 	        }
 	    };
 	}
@@ -57517,6 +57516,335 @@
 			"url": "http://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=",
 			"urlsuffix": ""
 		}
+	};
+
+/***/ },
+/* 855 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(298);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(490);
+
+	var _reactBootstrap = __webpack_require__(567);
+
+	var _reactFa = __webpack_require__(840);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Simple = function (_Component) {
+	    _inherits(Simple, _Component);
+
+	    function Simple(props) {
+	        _classCallCheck(this, Simple);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Simple).call(this, props));
+
+	        _this.handleChange = _this.handleChange.bind(_this);
+	        _this.handleFocus = _this.handleFocus.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(Simple, [{
+	        key: 'handleChange',
+	        value: function handleChange(e) {
+	            if (e.target.value.length > 0) {
+	                this.props.onChange(e.target.value);
+	            }
+	        }
+	    }, {
+	        key: 'handleFocus',
+	        value: function handleFocus() {
+	            console.debug("handlFocus called");
+	            _reactRouter.browserHistory.push('/');
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                _reactBootstrap.Jumbotron,
+	                null,
+	                _react2.default.createElement(
+	                    _reactBootstrap.FormGroup,
+	                    null,
+	                    _react2.default.createElement(
+	                        _reactBootstrap.ControlLabel,
+	                        null,
+	                        'Enter Gene Symbol or Disease name'
+	                    ),
+	                    _react2.default.createElement(
+	                        _reactBootstrap.InputGroup,
+	                        { bsSize: 'large' },
+	                        _react2.default.createElement(
+	                            _reactBootstrap.InputGroup.Addon,
+	                            null,
+	                            _react2.default.createElement('i', { className: 'fa fa-search' })
+	                        ),
+	                        _react2.default.createElement(_reactBootstrap.FormControl, {
+	                            type: 'text',
+	                            placeholder: 'Breast cancer, Parkinson\'s, ADH4, PARK2, ...',
+	                            onChange: this.handleChange,
+	                            onFocus: this.handleFocus
+	                        })
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Simple;
+	}(_react.Component);
+
+	exports.default = Simple;
+
+/***/ },
+/* 856 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(298);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactBootstrap = __webpack_require__(567);
+
+	var _reactFa = __webpack_require__(840);
+
+	var _Organism = __webpack_require__(859);
+
+	var _Organism2 = _interopRequireDefault(_Organism);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Advanced = function (_Component) {
+	    _inherits(Advanced, _Component);
+
+	    function Advanced(props) {
+	        _classCallCheck(this, Advanced);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Advanced).call(this, props));
+	    }
+
+	    _createClass(Advanced, [{
+	        key: 'render',
+	        value: function render() {
+	            var orgs = this.props.organisms;
+
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-5' },
+	                        _react2.default.createElement(
+	                            _reactBootstrap.Jumbotron,
+	                            null,
+	                            _react2.default.createElement(
+	                                'h3',
+	                                null,
+	                                'By Gene'
+	                            ),
+	                            _react2.default.createElement(_Organism2.default, { id: 'geneOrg', list: orgs }),
+	                            _react2.default.createElement(
+	                                _reactBootstrap.FormGroup,
+	                                { controlId: 'byGene' },
+	                                _react2.default.createElement(
+	                                    _reactBootstrap.ControlLabel,
+	                                    null,
+	                                    'Gene'
+	                                ),
+	                                _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', placeholder: 'Gene symbols, one per line' })
+	                            )
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-2 text-center' },
+	                        _react2.default.createElement(
+	                            'h3',
+	                            null,
+	                            'Or'
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-5' },
+	                        _react2.default.createElement(
+	                            _reactBootstrap.Jumbotron,
+	                            null,
+	                            _react2.default.createElement(
+	                                'h3',
+	                                null,
+	                                'By Disease'
+	                            ),
+	                            _react2.default.createElement(_Organism2.default, { id: 'diseaseOrg', list: orgs }),
+	                            _react2.default.createElement(
+	                                _reactBootstrap.FormGroup,
+	                                { controlId: 'byDisease' },
+	                                _react2.default.createElement(
+	                                    _reactBootstrap.ControlLabel,
+	                                    null,
+	                                    'Disease'
+	                                ),
+	                                _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', placeholder: 'Disease names or OMIM IDs' })
+	                            )
+	                        )
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-6 col-md-offset-3' },
+	                        _react2.default.createElement(
+	                            _reactBootstrap.Button,
+	                            { type: 'submit', bsStyle: 'primary', bsSize: 'large', block: true },
+	                            'Search'
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Advanced;
+	}(_react.Component);
+
+	exports.default = Advanced;
+
+
+	Advanced.propTypes = {
+	    organisms: _react.PropTypes.arrayOf(_react.PropTypes.object)
+	};
+
+/***/ },
+/* 857 */,
+/* 858 */,
+/* 859 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(298);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactBootstrap = __webpack_require__(567);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Organism = function (_Component) {
+	    _inherits(Organism, _Component);
+
+	    function Organism(props) {
+	        _classCallCheck(this, Organism);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Organism).call(this, props));
+	    }
+
+	    _createClass(Organism, [{
+	        key: 'render',
+	        value: function render() {
+	            var _props = _extends({}, this.props);
+
+	            var selected = _props.selected;
+	            var id = _props.id;
+
+
+	            return _react2.default.createElement(
+	                _reactBootstrap.FormGroup,
+	                { controlId: id },
+	                _react2.default.createElement(
+	                    _reactBootstrap.ControlLabel,
+	                    null,
+	                    'Species'
+	                ),
+	                _react2.default.createElement(
+	                    _reactBootstrap.FormControl,
+	                    { componentClass: 'select', placeholder: 'select', value: selected },
+	                    this.props.list.map(function (org) {
+	                        return _react2.default.createElement(
+	                            'option',
+	                            { key: org.id, value: org.id },
+	                            org.common,
+	                            ' (',
+	                            org.genus.substring(0, 1),
+	                            '. ',
+	                            org.species,
+	                            ')'
+	                        );
+	                    })
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Organism;
+	}(_react.Component);
+
+	exports.default = Organism;
+
+
+	Organism.propTypes = {
+	    id: _react.PropTypes.string,
+	    selected: _react.PropTypes.number,
+	    list: _react.PropTypes.arrayOf(_react.PropTypes.shape({
+	        id: _react.PropTypes.number,
+	        genus: _react.PropTypes.string,
+	        species: _react.PropTypes.string,
+	        common: _react.PropTypes.string
+	    })).isRequired
+	};
+
+	Organism.defaultProps = {
+	    selected: 9606
 	};
 
 /***/ }

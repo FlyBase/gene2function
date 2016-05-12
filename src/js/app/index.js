@@ -9,8 +9,8 @@ import configureStore from './store/configureStore';
 
 import App from './containers/App';
 
-import SearchResult from './components/SearchResult';
-import OrthologResult from './components/OrthologResult';
+import SearchResult from './components/results/SearchResult';
+import OrthologResult from './components/results/OrthologResult';
 
 console.debug("Creating store");
 const initialState = {};

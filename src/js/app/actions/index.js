@@ -78,4 +78,9 @@ export function setOrganismFilter(taxid) {
     return { type: SET_ORGANISM_FILTER, taxid };
 }
 
+export const TOGGLE_SEARCH = 'TOGGLE_SEARCH';
+export function toggleSearch() {
+    return { type: TOGGLE_SEARCH };
+}
+
 

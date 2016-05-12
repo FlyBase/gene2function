@@ -1,16 +1,16 @@
-import React from 'react';
+import React, {Component, PropTypes} from 'react';
 
 import GeneInput from './GeneInput';
 import Organism from './Organism';
-import ButtonInput from 'react-bootstrap/lib/ButtonInput';
+import { FormGroup, ButtonInput, InputGroup, FormControl, ControlLabel } from 'react-bootstrap';
 
-export default class Gene extends React.Component {
+export default class Gene extends Component {
     render() {
         return (
-            <div className="jumbotron">
+            <div>
                 <h3>By gene</h3>
                 <form onSubmit={this.props.geneSearch}>
-                    <Organism selected={this.props.current.selectedOrganism} list={this.props.current.organisms} {...this.props.actions} />
+                {//<Organism selected={this.props.current.selectedOrganism} list={this.props.current.organisms} {...this.props.actions} />//}
                     <GeneInput {...this.props.actions} /> 
                     <ButtonInput type="submit" value="Search" bsSize="large" />
                 </form>
@@ -19,3 +19,7 @@ export default class Gene extends React.Component {
     }
 }
 
+Gene.propTypes = {
+
+
+};

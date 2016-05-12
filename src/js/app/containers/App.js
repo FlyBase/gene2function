@@ -3,30 +3,19 @@ import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as Actions from '../actions';
-import { FormGroup, InputGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import { FormGroup, Form, InputGroup, FormControl, ControlLabel } from 'react-bootstrap';
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-import SearchResult from '../components/SearchResult';
+import SearchResult from '../components/results/SearchResult';
+import Simple from '../components/search/Simple';
+import Advanced from '../components/search/Advanced';
 
 class App extends Component {
     constructor(props) {
         super(props);
-        this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleFocus = this.handleFocus.bind(this);
-    }
-
-    handleChange(e) {
-        if (e.target.value.length > 0) {
-            this.props.onChange(e.target.value);
-        }
-    }
-
-    handleFocus() {
-        console.debug("handlFocus called");
-        browserHistory.push('/');
     }
 
     handleSubmit(e){
@@ -69,36 +58,23 @@ class App extends Component {
             );
         }
 
+        const form = (this.props.isSimple) ? <Simple /> : <Advanced organisms={this.props.organisms} />; 
+
         return (
             <div>
                 <Header />
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12">
-                            <h2>Ortholog Search</h2>
+                            <h2>{(this.props.isSimple) ? null : 'Advanced' } Ortholog Search</h2>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-md-12">
-                            <div className="jumbotron">
-                                <form onSubmit={this.handleSubmit}>
-                                    <FormGroup>
-                                        <ControlLabel>Enter Gene Symbol or Disease name</ControlLabel>
-                                        <InputGroup bsSize="large">
-                                            <InputGroup.Addon>
-                                                <i className="fa fa-search"></i>
-                                            </InputGroup.Addon>
-                                            <FormControl
-                                                type="text" 
-                                                placeholder="Breast cancer, Parkinson's, ADH4, PARK2, ..."
-                                                onChange={this.handleChange}
-                                                onFocus={this.handleFocus}
-                                                />
-                                        </InputGroup>
-                                    </FormGroup>
-
-                                </form>
-                            </div>
+                            <Form onSubmit={this.handleSubmit}>
+                                {form}
+                            </Form>
+                            <a className="pull-right" href="#" onClick={this.props.toggleSearch}>{(this.props.isSimple) ? 'Advanced' : 'Simple'}</a>
                         </div>
                     </div>
                     <div className="row">
@@ -115,7 +91,18 @@ class App extends Component {
 }
 
 App.propTypes = {
+    term : PropTypes.string,
+    isSimple: PropTypes.bool,
+    diseases : PropTypes.array,
+    genes : PropTypes.array,
+    organisms: PropTypes.array,
+    selectedOrganism : PropTypes.number,
+    fetchOrtholog : PropTypes.func,
+    onChange : PropTypes.func,
+    setOrganismFilter : PropTypes.func,
+    toggleSearch : PropTypes.func
 };
+
 //App.defaultProps = { organism: "dmel", term: "" };
 function mapStateToProps(state, ownProps) {
     console.debug("mapping state to props");
@@ -140,6 +127,10 @@ function mapDispatchToProps(dispatch) {
         fetchOrtholog: (gene, taxid) => {
             console.debug("Firing fetchOrthologs");
             dispatch(Actions.fetchOrtholog(gene, taxid));
+        },
+        toggleSearch: (e) => {
+            dispatch(Actions.toggleSearch());
+            e.preventDefault();
         }
     };
 }

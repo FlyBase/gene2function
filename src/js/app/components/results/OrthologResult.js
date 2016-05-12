@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
 import { Icon } from 'react-fa';
-import Linkout from './Linkout';
+import Linkout from '../Linkout';
 
 const sourceTitles = ['Compara','Homologene','Inparanoid','Isobase','OMA','OrthoDB','orthoMCL','Phylome','RoundUp','TreeFam'];
 

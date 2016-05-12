@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { browserHistory as history } from 'react-router';
 
-import GeneFilter from './GeneFilter';
+import GeneFilter from '../GeneFilter';
 
 export default class GeneResult extends Component {
 

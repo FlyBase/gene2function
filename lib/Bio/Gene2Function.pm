@@ -30,6 +30,7 @@ get '/search/gene/:taxid/symbol/:symbol' => sub {
     template 'index';
 };
 
+#Simple search
 get '/api/search/:term' => sub {
     my $term = params->{term};
     debug("Searching for " . $term);
