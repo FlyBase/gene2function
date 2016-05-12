@@ -57023,6 +57023,14 @@
 	                    { striped: true, hover: true, data: orthologs },
 	                    _react2.default.createElement(
 	                        _reactBootstrapTable.TableHeaderColumn,
+	                        { dataField: 'target_species',
+	                            caretRender: this.renderSortIndicator,
+	                            dataSort: true
+	                        },
+	                        'Organism'
+	                    ),
+	                    _react2.default.createElement(
+	                        _reactBootstrapTable.TableHeaderColumn,
 	                        { isKey: true,
 	                            dataField: 'ortholog_gene',
 	                            dataSort: true,
@@ -57089,14 +57097,6 @@
 	                                _react2.default.createElement(_reactFa.Icon, { name: 'info-circle' })
 	                            )
 	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        _reactBootstrapTable.TableHeaderColumn,
-	                        { dataField: 'target_species',
-	                            caretRender: this.renderSortIndicator,
-	                            dataSort: true
-	                        },
-	                        'Species'
 	                    ),
 	                    _react2.default.createElement(
 	                        _reactBootstrapTable.TableHeaderColumn,

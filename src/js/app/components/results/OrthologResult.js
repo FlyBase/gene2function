@@ -126,6 +126,12 @@ export default class OrthologResult extends Component {
             <div>
                 <h4>Orthologs of the <em>{species}</em> gene <mark>{gene}</mark></h4>
                 <BootstrapTable striped={true} hover={true} data={orthologs}>
+                    <TableHeaderColumn dataField="target_species"
+                                       caretRender={this.renderSortIndicator}
+                                       dataSort={true}
+                                       >
+                        Organism
+                    </TableHeaderColumn>
                     <TableHeaderColumn isKey={true}
                                        dataField="ortholog_gene"
                                        dataSort={true}
@@ -159,12 +165,6 @@ export default class OrthologResult extends Component {
                         <OverlayTrigger trigger="click" placement="top" overlay={<Popover id="best_reverse_score" title="Best Score - Reverse Search">Indicates that the orthology call has the highest score when going from the target organism to the query organism.</Popover>}>
                             <a tabindex="0" className="btn" role="button" onClick={(e) => e.stopPropagation() } ><Icon name="info-circle" /></a>
                         </OverlayTrigger>
-                    </TableHeaderColumn>
-                    <TableHeaderColumn dataField="target_species"
-                                       caretRender={this.renderSortIndicator}
-                                       dataSort={true}
-                                       >
-                        Species
                     </TableHeaderColumn>
                     <TableHeaderColumn dataField="source"
                                        dataAlign="center"
