@@ -98,15 +98,15 @@ $es->indices->create(
                     },
                     symbol     => {
                         type => 'string',
-                        analyzer => 'simple'
+                        analyzer => 'standard'
                     },
                     fullname => {
                         type => 'string',
-                        analyzer => 'simple'
+                        analyzer => 'standard'
                     },
                     symbol_synonyms => {
                         type  => 'string',
-                        analyzer => 'simple'
+                        analyzer => 'standard'
                     },
                     taxid => {
                         type => 'integer',
@@ -118,8 +118,8 @@ $es->indices->create(
                     },
                     suggest => {
                         type => 'completion',
-                        analyzer => 'simple',
-                        search_analyzer => 'simple',
+                        analyzer => 'standard',
+                        search_analyzer => 'standard',
                         payloads => 'false'
                     }
                 }
@@ -153,8 +153,8 @@ while (<$fh>) {
                 fullname        => $name,
                 symbol          => $symbol,
                 symbol_synonyms => \@synonyms,
-                dbxrefs         => \@dbxrefs,
-                suggest         => \@suggest
+                dbxrefs         => \@dbxrefs
+                #suggest         => \@suggest
             }
         }
     );

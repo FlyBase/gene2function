@@ -42,7 +42,7 @@ get '/api/search/:term' => sub {
                 multi_match => {
                     query => $term,
                     type => 'phrase_prefix',
-                    fields => ['name','fullname','symbol','synonyms','id','dbxrefs']
+                    fields => ['id^10','name^7','symbol^7','fullname','symbol_synonyms^3','synonyms','dbxrefs','genes']
                 }
             }
         }

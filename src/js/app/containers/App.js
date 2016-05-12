@@ -90,7 +90,7 @@ class App extends Component {
                                             </InputGroup.Addon>
                                             <FormControl
                                                 type="text" 
-                                                placeholder="Breast cancer, Parkinsons, ADH4, PARK2, ..."
+                                                placeholder="Breast cancer, Parkinson's, ADH4, PARK2, ..."
                                                 onChange={this.handleChange}
                                                 onFocus={this.handleFocus}
                                                 />

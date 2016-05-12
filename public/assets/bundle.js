@@ -36766,7 +36766,7 @@
 	                                            ),
 	                                            _react2.default.createElement(_reactBootstrap.FormControl, {
 	                                                type: 'text',
-	                                                placeholder: 'Breast cancer, Parkinsons, ADH4, PARK2, ...',
+	                                                placeholder: 'Breast cancer, Parkinson\'s, ADH4, PARK2, ...',
 	                                                onChange: this.handleChange,
 	                                                onFocus: this.handleFocus
 	                                            })
@@ -56223,6 +56223,8 @@
 
 	var _DiseaseResult2 = _interopRequireDefault(_DiseaseResult);
 
+	var _classnames = __webpack_require__(589);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -56270,23 +56272,49 @@
 	                        )
 	                    ),
 	                    _react2.default.createElement(
-	                        'p',
-	                        { className: 'text-right' },
+	                        'ul',
+	                        { className: 'nav nav-tabs', role: 'tablist' },
 	                        _react2.default.createElement(
-	                            'b',
-	                            null,
-	                            diseases.length,
-	                            ' disease(s) and ',
-	                            genes.length,
-	                            ' gene(s)'
+	                            'li',
+	                            { role: 'presentation', className: 'active' },
+	                            _react2.default.createElement(
+	                                'a',
+	                                { href: '#genes', 'aria-controls': 'genes', role: 'tab', 'data-toggle': 'tab' },
+	                                'Genes (',
+	                                genes.length,
+	                                ')'
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'li',
+	                            { role: 'presentation' },
+	                            _react2.default.createElement(
+	                                'a',
+	                                { href: '#diseases', 'aria-controls': 'diseases', role: 'tab', 'data-toggle': 'tab' },
+	                                'Diseases (',
+	                                diseases.length,
+	                                ')'
+	                            )
 	                        )
 	                    ),
-	                    _react2.default.createElement(_DiseaseResult2.default, { diseases: diseases, fetchOrtholog: fetchOrtholog }),
-	                    _react2.default.createElement(_GeneResult2.default, { genes: genes,
-	                        organisms: organisms,
-	                        selectedOrganism: selectedOrganism,
-	                        setOrganismFilter: setOrganismFilter,
-	                        fetchOrtholog: fetchOrtholog })
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'tab-content' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { role: 'tabpanel', className: 'tab-pane active', id: 'genes' },
+	                            _react2.default.createElement(_GeneResult2.default, { genes: genes,
+	                                organisms: organisms,
+	                                selectedOrganism: selectedOrganism,
+	                                setOrganismFilter: setOrganismFilter,
+	                                fetchOrtholog: fetchOrtholog })
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { role: 'tabpanel', className: 'tab-pane', id: 'diseases' },
+	                            _react2.default.createElement(_DiseaseResult2.default, { diseases: diseases, fetchOrtholog: fetchOrtholog })
+	                        )
+	                    )
 	                );
 	            }
 	            return null;
@@ -56397,11 +56425,6 @@
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'panel panel-success' },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'panel-heading' },
-	                    'Genes'
-	                ),
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'panel-body' },
@@ -56659,11 +56682,6 @@
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'panel panel-info' },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'panel-heading' },
-	                    'Diseases'
-	                ),
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'panel-body' },

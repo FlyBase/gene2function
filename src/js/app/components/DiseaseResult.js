@@ -20,7 +20,6 @@ export default class DiseaseResult extends Component {
         if (diseases.length == 0) { return null; }
         return (
             <div className="panel panel-info">
-                <div className="panel-heading">Diseases</div>
                 <div className="panel-body">
                     <table className="table table-hover table-striped">
                         <thead>

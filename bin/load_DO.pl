@@ -120,14 +120,14 @@ $es->indices->create(
                     dbxrefs => { type=> 'string' },
                     genes => {
                         type => 'string',
-                        analyzer => 'simple'
+                        analyzer => 'standard'
                     },
                     gene_count => { type => 'integer' },
                     synonyms => { type => 'string' },
                     suggest => {
                         type => 'completion',
-                        analyzer => 'simple',
-                        search_analyzer => 'simple',
+                        analyzer => 'standard',
+                        search_analyzer => 'standard',
                         payloads => 'false'
                     }
                 }

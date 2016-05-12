@@ -30,7 +30,6 @@ export default class GeneResult extends Component {
         if (genes.length == 0) { return null; }
         return (
             <div className="panel panel-success">
-                <div className="panel-heading">Genes</div>
                 <div className="panel-body">
                     <div className="row">
                         <div className="col-sm-4">
