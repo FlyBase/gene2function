@@ -124,7 +124,7 @@ export default class OrthologResult extends Component {
 
         return (
             <div>
-                <h4>Orthologs of the gene <mark>{gene}</mark> in <em>{species}</em></h4>
+                <h4>Orthologs of the <em>{species}</em> gene <mark>{gene}</mark></h4>
                 <BootstrapTable striped={true} hover={true} data={orthologs}>
                     <TableHeaderColumn isKey={true}
                                        dataField="ortholog_gene"

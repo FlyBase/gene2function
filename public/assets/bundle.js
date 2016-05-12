@@ -57005,17 +57005,17 @@
 	                _react2.default.createElement(
 	                    'h4',
 	                    null,
-	                    'Orthologs of the gene ',
-	                    _react2.default.createElement(
-	                        'mark',
-	                        null,
-	                        gene
-	                    ),
-	                    ' in ',
+	                    'Orthologs of the ',
 	                    _react2.default.createElement(
 	                        'em',
 	                        null,
 	                        species
+	                    ),
+	                    ' gene ',
+	                    _react2.default.createElement(
+	                        'mark',
+	                        null,
+	                        gene
 	                    )
 	                ),
 	                _react2.default.createElement(
