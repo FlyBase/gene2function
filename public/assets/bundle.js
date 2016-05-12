@@ -36718,7 +36718,7 @@
 	                    fetchOrtholog: this.props.fetchOrtholog });
 	            }
 
-	            var form = this.props.isSimple ? _react2.default.createElement(_Simple2.default, null) : _react2.default.createElement(_Advanced2.default, { organisms: this.props.organisms });
+	            var form = this.props.isSimple ? _react2.default.createElement(_Simple2.default, { onChange: this.props.onChange }) : _react2.default.createElement(_Advanced2.default, { organisms: this.props.organisms });
 
 	            return _react2.default.createElement(
 	                'div',
@@ -57612,6 +57612,11 @@
 	}(_react.Component);
 
 	exports.default = Simple;
+
+
+	Simple.propTypes = {
+	    onChange: _react.PropTypes.func.isRequired
+	};
 
 /***/ },
 /* 856 */

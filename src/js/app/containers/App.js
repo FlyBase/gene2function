@@ -58,7 +58,7 @@ class App extends Component {
             );
         }
 
-        const form = (this.props.isSimple) ? <Simple /> : <Advanced organisms={this.props.organisms} />; 
+        const form = (this.props.isSimple) ? <Simple onChange={this.props.onChange} /> : <Advanced organisms={this.props.organisms} />; 
 
         return (
             <div>

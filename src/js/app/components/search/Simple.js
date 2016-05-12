@@ -43,3 +43,7 @@ export default class Simple extends Component {
         );
     }
 }
+
+Simple.propTypes = {
+    onChange: PropTypes.func.isRequired
+}
