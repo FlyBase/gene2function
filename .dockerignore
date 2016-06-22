@@ -1,2 +1,3 @@
 Dockerfile
+docker-compose.yml
 src/js/node_modules

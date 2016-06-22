@@ -19,11 +19,10 @@ RUN mkdir -p /g2f
 RUN mkdir -p /data
 
 COPY . /g2f/
+COPY entrypoint.sh /
 
 VOLUME /g2f
 VOLUME /data
 
 EXPOSE 5000
-ENTRYPOINT ["plackup"]
-
-CMD ["-r","/g2f/bin/app.psgi"]
+ENTRYPOINT ["/docker-entrypoint.sh"]

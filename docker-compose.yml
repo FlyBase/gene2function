@@ -1,0 +1,20 @@
+version: '2'
+services:
+    db:
+        image: elasticsearch
+        volumes:
+            - dbdata:/usr/share/elasticsearch/data
+    g2f:
+        image: flybase/gene2function
+        volumes: 
+            - g2f_data:/data
+            - .:/g2f
+        depends_on:
+            - db
+        links:
+            - db
+        ports:
+            - "5000:5000"
+volumes:
+    dbdata:
+  g2f_data:
