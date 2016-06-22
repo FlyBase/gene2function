@@ -4,8 +4,8 @@ A proof of concept for integrating human disease data and orthology.
 
 ## Prerequisites
 
-    * [Docker](https://www.docker.com/products/overview)
-    * [Docker Compose](https://docs.docker.com/compose/install/)
+* [Docker](https://www.docker.com/products/overview)
+* [Docker Compose](https://docs.docker.com/compose/install/)
 
 ## Installation
 
