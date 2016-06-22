@@ -19,7 +19,7 @@ RUN mkdir -p /g2f
 RUN mkdir -p /data
 
 COPY . /g2f/
-COPY entrypoint.sh /
+COPY docker-entrypoint.sh /
 
 VOLUME /g2f
 VOLUME /data
