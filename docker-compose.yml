@@ -14,7 +14,7 @@ services:
         links:
             - db
         ports:
-            - 5000
+            - "127.0.0.1:5000:5000"
 volumes:
   dbdata:
   g2f_data:
