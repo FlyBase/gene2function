@@ -62,6 +62,7 @@ Now fire up your browser and head over to http://localhost:5000/.
    ```
 
 2. Modify PATH
+   For BASH shells
    ```
    export PATH=./node_modules/.bin:$PATH
    ```
