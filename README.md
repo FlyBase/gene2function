@@ -61,7 +61,7 @@ Now fire up your browser and head over to http://localhost:5000/.
    npm install
    ```
 
-2. Modify PATH
+2. Modify PATH  
    For BASH shells
    ```
    export PATH=./node_modules/.bin:$PATH
