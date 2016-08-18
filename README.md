@@ -56,28 +56,23 @@ Now fire up your browser and head over to http://localhost:5000/.
 #### Compile JS application
 
 1. Install JS dependencies.
-
 ```
-    cd gene2function/src/js
-    npm install
+cd gene2function/src/js
+npm install
 ```
 
 2. Modify PATH
-    
 ```
-    export PATH=./node_modules/.bin:$PATH
+export PATH=./node_modules/.bin:$PATH
 ```
-    Place in your .bash_profile to persist this change.
+   Place in your .bash_profile to persist this change.
 
 3. Run webpack
-
 ```
-    cd gene2function/src/js
-    webpack
+cd gene2function/src/js
+webpack
 ```
-
-or for continuous building on file changes
-
+   or for continuous building on file changes
 ```
     webpack -w 
 ```
