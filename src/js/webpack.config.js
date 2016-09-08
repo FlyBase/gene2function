@@ -1,4 +1,5 @@
 var path = require('path');
+var autoprefixer = require('autoprefixer');
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = {
@@ -23,7 +24,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+                loader: ExtractTextPlugin.extract('style', 'css!postcss')
             },
             {
                 test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -40,6 +41,19 @@ module.exports = {
     resolve: {
     },
     externals: {
+    },
+    // We use PostCSS for autoprefixing only.
+    postcss: function() {
+        return [
+            autoprefixer({
+            browsers: [
+                '>1%',
+                'last 4 versions',
+                'Firefox ESR',
+                'not ie < 9', // React doesn't support IE8 anyway
+            ]
+        }),
+        ];
     },
     plugins: [
         new ExtractTextPlugin('bundle.css')
