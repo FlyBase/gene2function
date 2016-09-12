@@ -31,6 +31,10 @@ export default class OrthologResult extends Component {
 
     }
 
+    renderID( reports ) {
+        return(<span>{reports[0]}</span>)
+    }
+
     renderSpecies(speciesTxt) {
         if( speciesTxt ) {
             // speciesTxt should look like "Species name (common name[, another common name])"
@@ -172,7 +176,12 @@ export default class OrthologResult extends Component {
                 <h4>Orthologs of the <em>{species}</em> gene <mark>{gene}</mark></h4>
                 <BootstrapTable striped={true} hover={true} data={orthologs} options={tableOptionsObj}>
                     <TableHeaderColumn isKey={true}
-                                       dataField="ortholog_gene"
+                                       dataField="ortholog_gene_reports"
+                                       dataFormat={this.renderID}
+                                       hidden={true}>
+                        ID
+                    </TableHeaderColumn>
+                    <TableHeaderColumn dataField="ortholog_gene"
                                        dataSort={true}
                                        width="100"
                                        caretRender={this.renderSortIndicator}>
