@@ -62,7 +62,7 @@ get '/api/ortholog/:taxid/:gene' => sub {
     my $taxid = params->{taxid};
     my $gene  = params->{gene};
 
-    my $response= $ua->get("http://flybase.org/cgi-bin/orthosearch.cgi?ortholog=" . $gene . "&orthologinput=" . get_species_abbrev($taxid) . "&format=json");
+    my $response= $ua->get("http://dev.flybase.org/cgi-bin/orthosearch.cgi?ortholog=" . $gene . "&orthologinput=" . get_species_abbrev($taxid) . "&format=json");
 
     if ($response->is_success) {
         content_type 'application/json';

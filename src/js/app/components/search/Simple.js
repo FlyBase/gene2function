@@ -18,7 +18,7 @@ export default class Simple extends Component {
     }
 
     handleFocus() {
-        console.debug("handlFocus called");
+        console.debug("handleFocus called");
         browserHistory.push('/');
     }
 

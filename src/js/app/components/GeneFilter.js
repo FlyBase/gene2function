@@ -8,7 +8,7 @@ export default class GeneFilter extends Component {
     }
 
     handleChange(e) {
-        console.debug("Specied toggled.");
+        console.debug("Species toggled.");
         this.props.setOrganismFilter(e.target.value);
     }
 
