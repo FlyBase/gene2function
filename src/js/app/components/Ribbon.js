@@ -66,7 +66,7 @@ export class Block extends Component {
         return(
             <div className="ribbonBlock" style={rBlockStyle}>
               {blockTitleDiv}
-              <OverlayTrigger trigger="click" placement="left" overlay={termList}>
+              <OverlayTrigger trigger="click" placement="left" overlay={termList} rootClose={true}>
                 <div className="ribbonTile" title={tileTitle} style={{backgroundColor:color}}></div>
               </OverlayTrigger>
             </div>

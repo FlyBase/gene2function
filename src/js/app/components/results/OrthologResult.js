@@ -263,7 +263,7 @@ export default class OrthologResult extends Component {
                                        caretRender={this.renderSortIndicator}
                                        dataSort={true}
                                        columnClassName={(c,r,ri,ci) =>  (c && c.toUpperCase() == 'YES') ? "success" : "" }>
-                        <OverlayTrigger trigger="click" placement="top" overlay={<Popover id="best_score" title="Best Score">Indicates that the orthology call has the highest score when going from the query organism to the target organism.</Popover>}>
+                        <OverlayTrigger trigger="click" placement="top" rootClose={true} overlay={<Popover id="best_score" title="Best Score">Indicates that the orthology call has the highest score when going from the query organism to the target organism.</Popover>}>
                             <a tabindex="0" className="btn" role="button" onClick={(e) => e.stopPropagation() } ><Icon name="info-circle" /></a>
                         </OverlayTrigger>
                         <br />
@@ -277,7 +277,7 @@ export default class OrthologResult extends Component {
                                        caretRender={this.renderSortIndicator}
                                        dataSort={true}
                                        columnClassName={(c,r,ri,ci) =>  (c && c.toUpperCase() == 'YES') ? "success" : "" }>
-                        <OverlayTrigger trigger="click" placement="top" overlay={<Popover id="best_reverse_score" title="Best Score - Reverse Search">Indicates that the orthology call has the highest score when going from the target organism to the query organism.</Popover>}>
+                        <OverlayTrigger trigger="click" placement="top" rootClose={true} overlay={<Popover id="best_reverse_score" title="Best Score - Reverse Search">Indicates that the orthology call has the highest score when going from the target organism to the query organism.</Popover>}>
                             <a tabindex="0" className="btn" role="button" onClick={(e) => e.stopPropagation() } ><Icon name="info-circle" /></a>
                         </OverlayTrigger>
                         <br />
@@ -302,7 +302,7 @@ export default class OrthologResult extends Component {
                                        width="90">
                         <p>
                             GO
-                            <OverlayTrigger trigger="click" placement="top" overlay={<Popover id="GO_terms" title="Gene Ontology">Color intensity indicates number of terms curated with GO experimental evidence codes. Hover/tap to display exact number.</Popover>}>
+                            <OverlayTrigger trigger="click" placement="top" rootClose={true} overlay={<Popover id="GO_terms" title="Gene Ontology">Color intensity indicates number of terms curated with GO experimental evidence codes. Hover/tap to display exact number.</Popover>}>
                                 <a tabindex="0" className="btn" role="button" onClick={(e) => e.stopPropagation() } ><Icon name="info-circle" /></a>
                             </OverlayTrigger>
                         </p>
