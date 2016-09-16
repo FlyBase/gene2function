@@ -302,11 +302,7 @@ export default class OrthologResult extends Component {
                                        width="90">
                         <p>
                             GO
-<<<<<<< Updated upstream
-                            <OverlayTrigger trigger="click" placement="top" rootClose={true} overlay={<Popover id="GO_terms" title="Gene Ontology">Color intensity indicates number of terms curated with GO experimental evidence codes. Hover/tap to display exact number.</Popover>}>
-=======
-                            <OverlayTrigger trigger="click" placement="top" overlay={<Popover id="GO_terms" title="Gene Ontology">Color intensity indicates number of terms curated with GO experimental evidence codes. Hover to display exact number. Click to see list.</Popover>}>
->>>>>>> Stashed changes
+                            <OverlayTrigger trigger="click" placement="top" rootClose={true} overlay={<Popover id="GO_terms" title="Gene Ontology">Color intensity indicates number of terms curated with GO experimental evidence codes. Hover to display exact number. Click to see list.</Popover>}>
                                 <a tabindex="0" className="btn" role="button" onClick={(e) => e.stopPropagation() } ><Icon name="info-circle" /></a>
                             </OverlayTrigger>
                         </p>

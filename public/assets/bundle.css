@@ -2198,3 +2198,41 @@
   overflow: visible;
   clip: auto;
 }
+.verticalTitlesTH { line-height: 1em !important }.ribbonStrip {
+    margin: 0 2em;
+    float: left;
+    font-size: 9pt;
+}
+.stripTitle {
+    font-size: 12pt;
+}
+.ribbonBlock {
+    height: 14em;
+    display: table-cell;
+    vertical-align: bottom;
+}
+.bold {
+    font-weight: bold;
+}
+.ribbonBlock:hover {
+    /*font-weight: bold;*/
+    color: #699;
+}
+.ribbonBlockTitleTerm {
+    -webkit-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+    text-indent: 10px;
+    width: 16px;
+    white-space: nowrap;
+}
+.ribbonTile {
+    border: 1px solid black;
+    height: 16px;
+    margin-right: -1px;
+    position: relative;
+}
+.ribbonTile:hover {
+    border: 1px solid #acd;
+    z-index: 10;
+}
