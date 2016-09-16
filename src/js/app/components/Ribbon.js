@@ -3,12 +3,27 @@
 import 'babel-polyfill';
 
 import React, {Component} from 'react';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 /* constants */
 // heatmap color constants
 var heatLevels = 8;
 var baseRGB = [0,96,96];        // [0,48,96] dark FB blue, [96,144,144] FB turquoise
 //var topHue  = 240;
+
+function TermList( key, termsArray ) {
+    if( termsArray.length==0 ) return(<div></div>);
+
+    let termListHTML = termsArray.map(
+        function(term) {
+            return(<li>{term.name}</li>);
+        }
+    );
+
+    let ulStyle = {paddingLeft:5};
+    let title = key+" terms";
+    return(<Popover title={title}><ul style={ulStyle}>{termListHTML}</ul></Popover>);
+};
 
 /* React components */
 export class Block extends Component {
@@ -34,9 +49,11 @@ export class Block extends Component {
     }
 
     render() {
-        const { blockdata, showBlockTitles } = this.props;
+        const { blockdata, showBlockTitles, blockkey } = this.props;
         var blockTitle = blockdata.name;
         var tileStrength = blockdata.terms.length;
+        let termList = TermList( blockkey, blockdata.terms );
+      //  console.debug(termList);
         var s = (tileStrength==1) ? '' : 's';
         var tileTitle = blockTitle+":\n"+tileStrength+" term"+s;
         var blockTitleClass = (tileStrength>0) ? 'ribbonBlockTitleTerm bold' : 'ribbonBlockTitleTerm';
@@ -49,7 +66,9 @@ export class Block extends Component {
         return(
             <div className="ribbonBlock" style={rBlockStyle}>
               {blockTitleDiv}
-              <div className="ribbonTile" title={tileTitle} style={{backgroundColor:color}}></div>
+              <OverlayTrigger trigger="click" placement="left" overlay={termList}>
+                <div className="ribbonTile" title={tileTitle} style={{backgroundColor:color}}></div>
+              </OverlayTrigger>
             </div>
         );
     }
