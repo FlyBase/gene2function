@@ -11,18 +11,18 @@ var heatLevels = 8;
 var baseRGB = [0,96,96];        // [0,48,96] dark FB blue, [96,144,144] FB turquoise
 //var topHue  = 240;
 
-function TermList( key, termsArray ) {
+function TermList( title, termsArray ) {
     if( termsArray.length==0 ) return(<div></div>);
 
     let termListHTML = termsArray.map(
         function(term) {
-            return(<li>{term.name}</li>);
+            return(<li key={term.id}>{term.name}</li>);
         }
     );
 
     let ulStyle = {paddingLeft:5};
-    let title = key+" terms";
-    return(<Popover title={title}><ul style={ulStyle}>{termListHTML}</ul></Popover>);
+    let ptitle = "GO: "+title+" terms";
+    return(<Popover title={ptitle}><ul style={ulStyle}>{termListHTML}</ul></Popover>);
 };
 
 /* React components */
@@ -52,7 +52,8 @@ export class Block extends Component {
         const { blockdata, showBlockTitles, blockkey } = this.props;
         var blockTitle = blockdata.name;
         var tileStrength = blockdata.terms.length;
-        let termList = TermList( blockkey, blockdata.terms );
+        console.debug(blockdata.name);
+        let termList = TermList( blockTitle, blockdata.terms );
       //  console.debug(termList);
         var s = (tileStrength==1) ? '' : 's';
         var tileTitle = blockTitle+":\n"+tileStrength+" term"+s;
@@ -136,6 +137,7 @@ export class MiniStrip extends Component {
         var StripOfBlocks = ribbonkeys.map(
             function( ID ) {
                 if( ribbondata.hasOwnProperty(ID) ) {
+                    console.debug(ribbondata[ID]);
                     return(<Block blockdata={ribbondata[ID]} showBlockTitles={false} key={ID} />);
                 }
             }
