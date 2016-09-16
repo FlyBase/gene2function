@@ -56562,7 +56562,7 @@
 	    _createClass(GeneFilter, [{
 	        key: 'handleChange',
 	        value: function handleChange(e) {
-	            console.debug("Specied toggled.");
+	            console.debug("Species toggled.");
 	            this.props.setOrganismFilter(e.target.value);
 	        }
 	    }, {
@@ -56814,7 +56814,7 @@
 	    }, {
 	        key: 'handleFocus',
 	        value: function handleFocus() {
-	            console.debug("handlFocus called");
+	            console.debug("handleFocus called");
 	            _reactRouter.browserHistory.push('/');
 	        }
 	    }, {
@@ -57373,6 +57373,12 @@
 
 	var _Linkout2 = _interopRequireDefault(_Linkout);
 
+	var _Ribbon = __webpack_require__(858);
+
+	__webpack_require__(859);
+
+	__webpack_require__(861);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -57381,7 +57387,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var _sourceTitles = ['Compara', 'Homologene', 'Inparanoid', 'Isobase', 'OMA', 'OrthoDB', 'orthoMCL', 'Phylome', 'RoundUp', 'TreeFam'];
+	var _sourceTitles = ['Compara', 'HGNC', 'Homologene', 'Inparanoid', 'Isobase', 'OMA', 'OrthoDB', 'orthoMCL', 'Panther', 'Phylome', 'RoundUp', 'TreeFam', 'ZFIN'];
 
 	var OrthologResult = function (_Component) {
 	    _inherits(OrthologResult, _Component);
@@ -57404,6 +57410,39 @@
 	            if (this.props.orthologs && this.props.orthologs.length == 0) {
 	                this.props.fetchOrtholog(gene, taxid);
 	            }
+	        }
+	    }, {
+	        key: 'miniReport',
+	        value: function miniReport(row) {
+	            console.log('[miniReport]');
+
+	            console.log(row);
+	        }
+	    }, {
+	        key: 'renderID',
+	        value: function renderID(reports) {
+	            return _react2.default.createElement(
+	                'span',
+	                null,
+	                reports[0]
+	            );
+	        }
+	    }, {
+	        key: 'renderSpecies',
+	        value: function renderSpecies(speciesTxt) {
+	            if (speciesTxt) {
+	                // speciesTxt should look like "Species name (common name[, another common name])"
+	                var spTokens = speciesTxt.match(/(.*) \((.*)\)/);
+	                // spTokens[1] is scientific name, spTokens[2] is common name(s)
+	                var Gspc = spTokens[1].replace(/^(.).*\s/, "$1. ");
+	                // return(<span><i>{Gspc}</i> ({spTokens[2]})</span>);
+	                return _react2.default.createElement(
+	                    'i',
+	                    null,
+	                    Gspc
+	                );
+	            }
+	            return null;
 	        }
 	    }, {
 	        key: 'renderLinkouts',
@@ -57462,6 +57501,25 @@
 	                }
 	            }
 
+	            return titles;
+	        }
+	    }, {
+	        key: 'GOtitles',
+	        value: function GOtitles() {
+	            var titles = [];
+	            var _arr = ['Mol Func', 'Cell Comp', 'Biol Proc'];
+	            for (var _i = 0; _i < _arr.length; _i++) {
+	                var g = _arr[_i];
+	                titles.push(_react2.default.createElement(
+	                    'div',
+	                    { className: 'rotated-text', key: g },
+	                    _react2.default.createElement(
+	                        'span',
+	                        { className: 'rotated-text-inner' },
+	                        g
+	                    )
+	                ));
+	            }
 	            return titles;
 	        }
 	    }, {
@@ -57534,6 +57592,22 @@
 	            return null;
 	        }
 	    }, {
+	        key: 'renderGO',
+	        value: function renderGO(GOobj) {
+	            // GOobj: { C: { name:'Cellular Component', terms: [{},{},...], count: # }, P: {}, F: {} }
+	            return _react2.default.createElement(_Ribbon.MiniStrip, { ribbondata: GOobj });
+	            //  return <div>{Object.keys(GOobj)}</div>;
+	        }
+	    }, {
+	        key: 'renderPubs',
+	        value: function renderPubs(publications) {
+	            return _react2.default.createElement(
+	                'span',
+	                null,
+	                publications.length
+	            );
+	        }
+	    }, {
 	        key: 'sortByScore',
 	        value: function sortByScore(a, b, order, field, score) {
 	            if (order === 'desc') {
@@ -57579,6 +57653,11 @@
 
 	            var species = orthologs[0] ? orthologs[0].query_species : '';
 
+	            var tableOptionsObj = { onRowClick: this.miniReport };
+
+	            console.debug(orthologs);
+
+	            // if 'onClick={this.miniReport}' is added to the top-level div, the miniReport function fires (but gets no row information)
 	            return _react2.default.createElement(
 	                'div',
 	                null,
@@ -57600,23 +57679,31 @@
 	                ),
 	                _react2.default.createElement(
 	                    _reactBootstrapTable.BootstrapTable,
-	                    { striped: true, hover: true, data: orthologs },
+	                    { striped: true, hover: true, data: orthologs, options: tableOptionsObj },
+	                    _react2.default.createElement(
+	                        _reactBootstrapTable.TableHeaderColumn,
+	                        { isKey: true,
+	                            dataField: 'ortholog_gene_reports',
+	                            dataFormat: this.renderID,
+	                            hidden: true },
+	                        'ID'
+	                    ),
+	                    _react2.default.createElement(
+	                        _reactBootstrapTable.TableHeaderColumn,
+	                        { dataField: 'ortholog_gene',
+	                            dataSort: true,
+	                            width: '100',
+	                            caretRender: this.renderSortIndicator },
+	                        'Gene'
+	                    ),
 	                    _react2.default.createElement(
 	                        _reactBootstrapTable.TableHeaderColumn,
 	                        { dataField: 'target_species',
 	                            caretRender: this.renderSortIndicator,
-	                            dataSort: true
-	                        },
-	                        'Organism'
-	                    ),
-	                    _react2.default.createElement(
-	                        _reactBootstrapTable.TableHeaderColumn,
-	                        { isKey: true,
-	                            dataField: 'ortholog_gene',
 	                            dataSort: true,
-	                            width: '200',
-	                            caretRender: this.renderSortIndicator },
-	                        'Gene'
+	                            dataFormat: this.renderSpecies,
+	                            width: '120' },
+	                        'Organism'
 	                    ),
 	                    _react2.default.createElement(
 	                        _reactBootstrapTable.TableHeaderColumn,
@@ -57682,6 +57769,8 @@
 	                        _reactBootstrapTable.TableHeaderColumn,
 	                        { dataField: 'source',
 	                            dataAlign: 'center',
+	                            width: '330',
+	                            className: 'verticalTitlesTH',
 	                            dataFormat: this.renderSource,
 	                            caretRender: this.renderSortIndicator,
 	                            dataSort: true,
@@ -57692,6 +57781,44 @@
 	                            'Prediction Dervied From'
 	                        ),
 	                        this.sourceTitles()
+	                    ),
+	                    _react2.default.createElement(
+	                        _reactBootstrapTable.TableHeaderColumn,
+	                        { dataField: 'GO',
+	                            dataAlign: 'center',
+	                            className: 'verticalTitlesTH',
+	                            dataFormat: this.renderGO,
+	                            width: '90' },
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'GO',
+	                            _react2.default.createElement(
+	                                _reactBootstrap.OverlayTrigger,
+	                                { trigger: 'click', placement: 'top', overlay: _react2.default.createElement(
+	                                        _reactBootstrap.Popover,
+	                                        { id: 'GO_terms', title: 'Gene Ontology' },
+	                                        'Color intensity indicates number of curated terms. Hover/tap to display exact number.'
+	                                    ) },
+	                                _react2.default.createElement(
+	                                    'a',
+	                                    { tabindex: '0', className: 'btn', role: 'button', onClick: function onClick(e) {
+	                                            return e.stopPropagation();
+	                                        } },
+	                                    _react2.default.createElement(_reactFa.Icon, { name: 'info-circle' })
+	                                )
+	                            )
+	                        ),
+	                        this.GOtitles()
+	                    ),
+	                    _react2.default.createElement(
+	                        _reactBootstrapTable.TableHeaderColumn,
+	                        { dataField: 'publications_number',
+	                            caretRender: this.renderSortIndicator,
+	                            dataSort: true,
+	                            dataAlign: 'center',
+	                            width: '100' },
+	                        'Publications'
 	                    )
 	                )
 	            );
@@ -57843,6 +57970,220 @@
 			"urlsuffix": ""
 		}
 	};
+
+/***/ },
+/* 858 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.MiniStrip = exports.Block = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	__webpack_require__(1);
+
+	var _react = __webpack_require__(298);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	/* constants */
+	// heatmap color constants
+	var heatLevels = 8;
+	var baseRGB = [0, 96, 96]; // [0,48,96] dark FB blue, [96,144,144] FB turquoise
+	//var topHue  = 240;
+
+	/* React components */
+
+	var Block = exports.Block = function (_Component) {
+	    _inherits(Block, _Component);
+
+	    function Block() {
+	        _classCallCheck(this, Block);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Block).apply(this, arguments));
+	    }
+
+	    _createClass(Block, [{
+	        key: 'heatColor',
+	        value: function heatColor(heat) {
+	            if (heat == 0) return "#fff"; // return 'white' if heat==0 (which should never happen)
+	            var colorCSS;
+	            var c = []; // [r,g,b]
+	            for (var i = 0; i < 3; i++) {
+	                // logarithmic heatmap (with cutoff)
+	                if (heat < heatLevels) {
+	                    var heatCoef = (256 - baseRGB[i]) * 3 / (heat + 3); // instead of just (256-baseRGB[i])/(Math.pow(2,heat)), which divides space from 'white' (255) down to target color level in halves, this starts at 3/4
+	                    c[i] = Math.round(baseRGB[i] + heatCoef);
+	                } else c[i] = baseRGB[i];
+	                // linear heatmap
+	                // var heatInc = (topHue-baseRGB[i])/heatLevels;
+	                // var depression = heatInc*Math.min(heat,heatLevels);
+	                // c[i] = Math.round(topHue - depression);
+	            }
+	            colorCSS = 'rgb(' + c[0] + ',' + c[1] + ',' + c[2] + ')';
+	            return colorCSS;
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _props = this.props;
+	            var blockdata = _props.blockdata;
+	            var showBlockTitles = _props.showBlockTitles;
+
+	            var blockTitle = blockdata.name;
+	            var tileStrength = blockdata.terms.length;
+	            var s = tileStrength == 1 ? '' : 's';
+	            var tileTitle = blockTitle + ":\n" + tileStrength + " term" + s;
+	            var blockTitleClass = tileStrength > 0 ? 'ribbonBlockTitleTerm bold' : 'ribbonBlockTitleTerm';
+	            var blockTitleDiv = function blockTitleDiv(showBlockTitles) {
+	                if (showBlockTitles) {
+	                    return _react2.default.createElement(
+	                        'div',
+	                        { className: blockTitleClass },
+	                        blockTitle
+	                    );
+	                } else return null;
+	            };
+	            var color = tileStrength ? this.heatColor(tileStrength) : '';
+	            var rBlockStyle = { height: 'auto', width: '1.8em', paddingRight: '0.4em' }; // this works for 'ministrip'
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'ribbonBlock', style: rBlockStyle },
+	                blockTitleDiv,
+	                _react2.default.createElement('div', { className: 'ribbonTile', title: tileTitle, style: { backgroundColor: color } })
+	            );
+	        }
+	    }]);
+
+	    return Block;
+	}(_react.Component);
+
+	;
+
+	var Strip = function (_Component2) {
+	    _inherits(Strip, _Component2);
+
+	    function Strip(props) {
+	        _classCallCheck(this, Strip);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Strip).call(this, props));
+	    }
+
+	    _createClass(Strip, [{
+	        key: 'getInitialState',
+	        value: function getInitialState() {
+	            return {
+	                data: {}
+	            };
+	        }
+	    }, {
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            // This url will depend on the source.  Other services will be created to handle non-GO ribbons.
+	            var url = "/api/ribbon/" + this.props.source + "/" + this.props.domain + "/" + this.props.FBgn;
+	            console.log(url);
+	            $.get(url, function (annData) {
+	                this.setState({ data: annData });
+	            }.bind(this));
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var annData = this.state.data;
+	            if (!annData.hasOwnProperty('resultset')) return _react2.default.createElement('div', null);
+	            // console.log(this.state.data.resultset.result[0].ribbon);
+	            var ribbon = annData.resultset.result[0].ribbon; // hash of GO_id: { count: #, terms: [], name: '' } objects
+	            var ribbonkeys = Object.keys(ribbon);
+	            // sort the ribbonKeys?
+	            var StripOfBlocks = ribbonkeys.map(function (termID) {
+	                if (ribbon.hasOwnProperty(termID)) {
+	                    return _react2.default.createElement(Block, { blockdata: ribbon[termID], showBlockTitles: true, key: termID });
+	                }
+	            });
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'ribbonStrip' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'blockBacker' },
+	                    StripOfBlocks
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'stripTitle' },
+	                    this.props.domain.replace(/_/g, ' ')
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Strip;
+	}(_react.Component);
+
+	exports.default = Strip;
+	;
+
+	var MiniStrip = exports.MiniStrip = function (_Component3) {
+	    _inherits(MiniStrip, _Component3);
+
+	    function MiniStrip(props) {
+	        _classCallCheck(this, MiniStrip);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(MiniStrip).call(this, props));
+	    }
+
+	    _createClass(MiniStrip, [{
+	        key: 'render',
+	        value: function render() {
+	            var ribbondata = this.props.ribbondata;
+
+	            var ribbonkeys = Object.keys(ribbondata);
+	            var StripOfBlocks = ribbonkeys.map(function (ID) {
+	                if (ribbondata.hasOwnProperty(ID)) {
+	                    return _react2.default.createElement(Block, { blockdata: ribbondata[ID], showBlockTitles: false, key: ID });
+	                }
+	            });
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'ribbonStrip', style: { margin: 0 } },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'blockBacker' },
+	                    StripOfBlocks
+	                )
+	            );
+	        }
+	    }]);
+
+	    return MiniStrip;
+	}(_react.Component);
+
+	;
+
+/***/ },
+/* 859 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 860 */,
+/* 861 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
 
 /***/ }
 /******/ ]);

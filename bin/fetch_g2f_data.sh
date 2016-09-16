@@ -10,7 +10,12 @@ curl -s ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene_info.gz > /data/gene_info.gz
 
 #DO OBO file
 echo "Fetching DO.obo"
-curl -s -L http://purl.obolibrary.org/obo/doid.obo | gzip > /data/doid.obo.gz
+# The file available below has consistently had formatting issues that
+# causes the BioPerl parser to fail.
+# The issues were related to faults in the file versus BioPerl
+#curl -s -L http://purl.obolibrary.org/obo/doid.obo | gzip > /data/doid.obo.gz
+# Use this alternative URL for now.
+curl -s -L https://github.com/DiseaseOntology/HumanDiseaseOntology/raw/master/src/ontology/doid.obo | gzip > /data/doid.obo.gz
 
 #OMIM  mim2gene
 echo "Fetching mim2gene"
