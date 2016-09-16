@@ -1,13 +1,13 @@
 /*!
- *  Font Awesome 4.6.1 by @davegandy - http://fontawesome.io - @fontawesome
+ *  Font Awesome 4.6.3 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
  */
 /* FONT PATH
  * -------------------------- */
 @font-face {
   font-family: 'FontAwesome';
-  src: url(404a525502f8e5ba7e93b9f02d9e83a9.eot);
-  src: url(404a525502f8e5ba7e93b9f02d9e83a9.eot?#iefix&v=4.6.1) format('embedded-opentype'), url(926c93d201fe51c8f351e858468980c3.woff2) format('woff2'), url(891e3f340c1126b4c7c142e5f6e86816.woff) format('woff'), url(fb650aaf10736ffb9c4173079616bf01.ttf) format('truetype'), url(bae4a87c1e5dff40baa3f49d52f5347a.svg#fontawesomeregular) format('svg');
+  src: url(25a32416abee198dd821b0b17a198a8f.eot);
+  src: url(25a32416abee198dd821b0b17a198a8f.eot?#iefix&v=4.6.3) format('embedded-opentype'), url(e6cf7c6ec7c2d6f670ae9d762604cb0b.woff2) format('woff2'), url(c8ddf1e5e5bf3682bc7bebf30f394148.woff) format('woff'), url(1dc35d25e61d819a9c357074014867ab.ttf) format('truetype'), url(d7c639084f684d66a1bc66855d193ed8.svg#fontawesomeregular) format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -1384,7 +1384,7 @@
 .fa-digg:before {
   content: "\F1A6";
 }
-.fa-pied-piper:before {
+.fa-pied-piper-pp:before {
   content: "\F1A7";
 }
 .fa-pied-piper-alt:before {
@@ -1510,6 +1510,7 @@
   content: "\F1CE";
 }
 .fa-ra:before,
+.fa-resistance:before,
 .fa-rebel:before {
   content: "\F1D0";
 }
@@ -2158,6 +2159,26 @@
 .fa-snapchat-square:before {
   content: "\F2AD";
 }
+.fa-pied-piper:before {
+  content: "\F2AE";
+}
+.fa-first-order:before {
+  content: "\F2B0";
+}
+.fa-yoast:before {
+  content: "\F2B1";
+}
+.fa-themeisle:before {
+  content: "\F2B2";
+}
+.fa-google-plus-circle:before,
+.fa-google-plus-official:before {
+  content: "\F2B3";
+}
+.fa-fa:before,
+.fa-font-awesome:before {
+  content: "\F2B4";
+}
 .sr-only {
   position: absolute;
   width: 1px;
@@ -2176,42 +2197,4 @@
   margin: 0;
   overflow: visible;
   clip: auto;
-}
-.verticalTitlesTH { line-height: 1em !important }.ribbonStrip {
-    margin: 0 2em;
-    float: left;
-    font-size: 9pt;
-}
-.stripTitle {
-    font-size: 12pt;
-}
-.ribbonBlock {
-    height: 14em;
-    display: table-cell;
-    vertical-align: bottom;
-}
-.bold {
-    font-weight: bold;
-}
-.ribbonBlock:hover {
-    /*font-weight: bold;*/
-    color: #699;
-}
-.ribbonBlockTitleTerm {
-    -webkit-transform: rotate(-45deg);
-        -ms-transform: rotate(-45deg);
-            transform: rotate(-45deg);
-    text-indent: 10px;
-    width: 16px;
-    white-space: nowrap;
-}
-.ribbonTile {
-    border: 1px solid black;
-    height: 16px;
-    margin-right: -1px;
-    position: relative;
-}
-.ribbonTile:hover {
-    border: 1px solid #acd;
-    z-index: 10;
 }
