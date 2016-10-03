@@ -25,8 +25,16 @@ const sourceNAs = {
       'ZFIN': ['Cele', 'Scer', 'Spom', 'Xtro', 'Rnor']
 };
 
-const sourcesForSpecies = {
-//      'Dmel': 
+const speciesNAs = {
+      'Hsap': [],
+      'Rnor': ['HGNC','Isobase','RoundUp','ZFIN'],
+      'Mmus': [],
+      'Xtro': ['HGNC','Isobase','orthoMCL','ZFIN'],
+      'Drer': ['HGNC','Isobase'],
+      'Dmel': ['HGNC'],
+      'Cele': ['HGNC','OrthoDB','ZFIN'],
+      'Spom': ['Compara','HGNC','Isobase','ZFIN'],
+      'Scer': ['HGNC','ZFIN'],
 };
 
 export default class OrthologResult extends Component {
@@ -100,6 +108,8 @@ export default class OrthologResult extends Component {
     sourceTitles() {
         let titles = [];
         for (let s of sourceTitles) {
+          // should be able to grey out inapplicable source titles - where to get query species from here?
+          //  let style = ( speciesNAs[qsp].indexOf(s) >= 0 ) ? {color:'grey'} : {};
             titles.push(<div className="rotated-text" key={s}><span className="rotated-text-inner">{s}</span></div>);
         }
         return titles;
@@ -118,7 +128,8 @@ export default class OrthologResult extends Component {
     }
 
     renderSource(sources,row) {
-        var sp = row.target_species_abbreviation;
+        var qsp = row.query_species_abbreviation;
+        var tsp = row.target_species_abbreviation;
         let sourceChecks = [];
         if (sources) {
             for (let s of sourceTitles) {
@@ -126,11 +137,17 @@ export default class OrthologResult extends Component {
                     "paddingRight": "0.2em",
                     "paddingLeft": "0.2em"
                 };
-         //   console.debug('looking for '+sp+' in sourceNAs for '+s+': '+sourceNAs[s]);
+                // filter out sources which don't make calls for the query species
+                console.log("speciesNAs["+qsp+"].indexOf("+s+") is "+speciesNAs[qsp].indexOf(s));
+                if( speciesNAs[qsp].indexOf(s) >= 0 ) {
+                    sourceChecks.push(<li key={s} style={styles}><Icon name="ban-circle" fixedWidth={true} /></li>);
+                    continue;
+                }
+         //   console.debug('looking for '+tsp+' in sourceNAs for '+s+': '+sourceNAs[s]);
                 if(sources.findIndex((el,i) => el.toUpperCase() === s.toUpperCase()) != -1) {
                     sourceChecks.push(<li key={s} style={styles}><Icon name="check-square-o" fixedWidth={true} /></li>);
                 }
-                else if( sourceNAs[s].indexOf(sp) >= 0 ) {
+                else if( sourceNAs[s].indexOf(tsp) >= 0 ) {
                     sourceChecks.push(<li key={s} style={styles}><Icon name="ban-circle" fixedWidth={true} /></li>);
                 }
                 else {
